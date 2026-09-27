@@ -94,7 +94,7 @@ class SupabaseStore {
   }
 }
 
-const DEMO_KEY = "resort-demo-v1";
+const DEMO_KEY = "resort-demo-v2";  // bump when the sample data changes so viewers get the new sample
 
 class DemoStore {
   mode = "demo";
