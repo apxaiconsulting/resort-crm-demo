@@ -37,7 +37,7 @@ function makeBookings() {
         const total = comp ? 0 : u.rate[we ? 1 : 0];
         const down = comp ? 0 : i === 0 ? (rand() < 0.3 ? total : Math.round(total / 2)) : 0;
         out.push({
-          cabin: u.id, stay_date: s, client_name: guest, phone: `09${Math.floor(100000000 + rand() * 899999999)}`,
+          cabin: u.id, stay_date: s, client_name: guest, phone: `(555) ${String(Math.floor(rand() * 1000)).padStart(3, "0")}-${String(Math.floor(rand() * 10000)).padStart(4, "0")}`,
           persons: pax, total, down_payment: down, commission: comp ? 0 : u.commission, complimentary: comp,
           balance_collected: s < todayStr, commission_paid: s < todayStr && rand() < 0.85,
           notes: comp ? "Complimentary (influencer stay)" : "",
@@ -58,12 +58,10 @@ function makeExpenses() {
     const day = n => ymd(new Date(first.getFullYear(), first.getMonth(), n));
     if (m === 0 && today.getDate() < 15) continue;  // this month's bills aren't in yet
     const add = (d, category, sub, amount, cabin = "") => out.push({ spent_on: day(d), cabin, category, sub_category: sub, amount: Math.round(amount), notes: "" });
-    add(15, "Salaries", "Housekeeping", 14000); add(15, "Salaries", "Caretaker", 12000); add(15, "Salaries", "Front desk", 13000);
-    add(10, "Electricity", "", 6500 + rand() * 3000); add(10, "Water", "", 1800 + rand() * 900);
-    add(5, "Internet", "", 1699); add(20, "LPG", "", 1100 * (1 + Math.floor(rand() * 2)));
-    add(8, "Supplies", "Toiletries", 2500 + rand() * 1500); add(8, "Supplies", "Linens", rand() < 0.3 ? 6000 : 1200);
-    add(3, "Marketing", "Facebook ads", 3000);
-    if (rand() < 0.5) add(12 + Math.floor(rand() * 10), "Repairs", "", 1500 + rand() * 6000, pick(cabins));
+    // each typical cost varies a little month to month
+    for (const [category, sub, amount, d] of BUSINESS.sampleMonthlyExpenses || []) add(d, category, sub, amount * (0.85 + rand() * 0.35));
+    const avgRate = BUSINESS.units.reduce((s, u) => s + u.rate[0], 0) / BUSINESS.units.length;
+    if (rand() < 0.5) add(12 + Math.floor(rand() * 10), "Repairs", "", avgRate * (0.5 + rand() * 2), pick(cabins));
   }
   return out.filter(e => e.amount > 0);
 }
