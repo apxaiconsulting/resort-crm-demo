@@ -2,7 +2,7 @@
 export const BUSINESS = {
   name: "Highland Cabins",          // shown on the login screen and browser tab
   shortName: "Highland",            // shown in the top bar
-  builtBy: "Built by APX AI",       // shown in the demo banner; leave "" to hide
+  builtBy: "Built by APX Labs",       // shown in the demo banner; leave "" to hide
   currency: "$",
   locale: "en-US",
 
